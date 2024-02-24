@@ -18,5 +18,6 @@ from kb_builders import *
 async def send_data(user_name, user_age, user_phone, cource_name):
     msg = f"Пользователь: {user_name}\nВозраст: {user_age}\nНомер телефона: {user_phone}\nНаправление: {cource_name}"
 
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={ADMIN}&text={msg}"
-    logger.info((requests.get(url).json()))
+    for admin in ADMINS: 
+        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={admin}&text={msg}"
+        logger.info((requests.get(url).json()))

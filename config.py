@@ -11,8 +11,10 @@ from aiogram.utils.markdown import *
 from loguru import *
 
 TOKEN = os.getenv("SAIKT_BOT_TOKEN")
-# ADMIN = "376442808" # "@max_bobrovskiy"
-ADMIN = "1660218648"  # "@Night3098"
+# ADMIN = ["376442808", "5122606203"] # saikt 
+ADMINS = ["1660218648", "1704818355"]  # dev
+
+
 
 bot = Bot(TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher()
