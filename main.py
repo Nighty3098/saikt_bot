@@ -18,7 +18,7 @@ from config import *
 from MESSAGES_TEXT import *
 from kb_builders import *
 from send_data import *
-
+from send_logs import *
 from handlers import *
 
 async def main() -> None:

@@ -16,7 +16,7 @@ from config import *
 from MESSAGES_TEXT import *
 from kb_builders import *
 from send_data import *
-
+from send_logs import *
 
 async def is_phone_valid(phone):
     return re.match(r"^\+?[78][-\(]?\d{3}\)?-?\d{3}-?\d{2}-?\d{2}$", phone)
@@ -29,10 +29,12 @@ async def hello_message(message: Message) -> None:
 
         user_id = message.from_user.id
         logger.info(f"{user_id} started the bot")
-        # logger.info(f"isRegister: {isRegister}")
         
         await message.answer(HELLO_MESSAGE, reply_markup=await main_menu())
+        await send_log_to_dev()
     except Exception as err:
+        await bot.send_message(DEV, str(err))
+        await send_log_to_dev()
         logger.error(f"{err}")
 
 @dp.callback_query(F.data == "to_menu")
@@ -71,6 +73,8 @@ async def get_course_name(callback: types.CallbackQuery):
 
         await callback.message.answer(f"Вы выбрали направление {course_name}\n{REGISTER_MESSAGE}")
     except Exception as err:
+        await bot.send_message(DEV, str(err))
+        await send_log_to_dev()
         logger.error(f"{err}")
 
 @dp.message()
@@ -99,4 +103,6 @@ async def get_data(message: Message):
         else:
             await message.answer(HELLO_MESSAGE, reply_markup=await main_menu())
     except Exception as err:
+        await bot.send_message(DEV, str(err))
+        await send_log_to_dev()
         logger.error(f"{err}")

@@ -14,6 +14,7 @@ from requests.models import *
 from config import *
 from MESSAGES_TEXT import *
 from kb_builders import *
+from send_logs import *
 
 async def send_data(user_name, user_age, user_phone, cource_name):
     now = datetime.datetime.now()
@@ -25,4 +26,6 @@ async def send_data(user_name, user_age, user_phone, cource_name):
         try:
             logger.debug(await bot.send_message(admin, msg))
         except Exception as err:
+            await bot.send_message(DEV, str(err))
+            await send_log_to_dev()
             logger.error(f"{err}")
