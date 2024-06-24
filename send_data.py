@@ -1,8 +1,8 @@
 import asyncio
 import json
 import logging
+import datetime
 
-import requests
 from aiogram import *
 from aiogram.enums import *
 from aiogram.filters import *
@@ -16,8 +16,10 @@ from MESSAGES_TEXT import *
 from kb_builders import *
 
 async def send_data(user_name, user_age, user_phone, cource_name):
-    msg = f"Пользователь: {user_name}\nВозраст: {user_age}\nНомер телефона: {user_phone}\nНаправление: {cource_name}"
+    now = datetime.datetime.now()
+    current_date = now.strftime("%d.%m.%Y %H:%M")
+
+    msg = f"====== Новая заявка ======\n\nПользователь: {user_name}\nВозраст: {user_age}\nНомер телефона: {user_phone}\nНаправление: {cource_name}\n\nДата подачи:\n{current_date}"
 
     for admin in ADMINS: 
-        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage?chat_id={admin}&text={msg}"
-        logger.info((requests.get(url).json()))
+        await bot.send_message(admin, msg)

@@ -36,7 +36,6 @@ async def courses_list():
     builder.add(types.InlineKeyboardButton(text="Web технологии", callback_data="Web технологии"))
     builder.add(types.InlineKeyboardButton(text="Дизайн и 3D", callback_data="Дизайн и 3D"))
     builder.add(types.InlineKeyboardButton(text="Программирование", callback_data="Программирование"))
-    builder.add(types.InlineKeyboardButton(text="Подготовка к ОГЭ / ЕГЭ", callback_data="Подготовка к ОГЭ / ЕГЭ"))
     builder.add(types.InlineKeyboardButton(text="Интернет предпринимательство", callback_data="Интернет предпринимательство"))
     builder.add(types.InlineKeyboardButton(text="Искуственный интеллект", callback_data="Искуственный интеллект"))
     builder.add(types.InlineKeyboardButton(text="Разработка игр", callback_data="Разработка игр"))
