@@ -24,12 +24,16 @@ async def is_phone_valid(phone):
 
 @dp.message(CommandStart())
 async def hello_message(message: Message) -> None:
-    global user_id
+    try:
+        global user_id
 
-    user_id = message.from_user.id
-    logger.info(f"{user_id} started the bot")
-    
-    await message.answer(HELLO_MESSAGE, reply_markup=await main_menu())
+        user_id = message.from_user.id
+        logger.info(f"{user_id} started the bot")
+        # logger.info(f"isRegister: {isRegister}")
+        
+        await message.answer(HELLO_MESSAGE, reply_markup=await main_menu())
+    except Exception as err:
+        logger.error(f"{err}")
 
 @dp.callback_query(F.data == "to_menu")
 async def to_main_menu(callback: types.CallbackQuery):
@@ -54,40 +58,45 @@ async def register(callback: types.CallbackQuery):
 
 @dp.callback_query()
 async def get_course_name(callback: types.CallbackQuery):
-    global course_name, isRegister
+    try:
+        global course_name, isRegister
 
-    logger.info("Senging question to user")
-    await callback.answer()
-    course_name = callback.data
+        logger.info("Senging question to user")
+        await callback.answer()
+        course_name = callback.data
 
-    logger.info(f"User: {user_id} selected: {course_name}")
-    isRegister = True
-    logger.info(f"isRegister: {isRegister}")
+        logger.info(f"User: {user_id} selected: {course_name}")
+        isRegister = True
+        logger.info(f"isRegister: {isRegister}")
 
-    await callback.message.answer(f"Вы выбрали направление {course_name}\n{REGISTER_MESSAGE}")
-
+        await callback.message.answer(f"Вы выбрали направление {course_name}\n{REGISTER_MESSAGE}")
+    except Exception as err:
+        logger.error(f"{err}")
 
 @dp.message()
 async def get_data(message: Message):
-    logger.info(f"User: {user_id} sending his data")
-    logger.info(f"isRegister: {isRegister}")
-    if isRegister == True:
-        data = message.text
-        split_data = data.split(" ")
+    try:
+        logger.info(f"User: {user_id} sending his data")
+        logger.info(f"isRegister: {isRegister}")
+        if isRegister == True:
+            data = message.text
+            split_data = data.split(" ")
 
-        if  await is_phone_valid(split_data[1]):
-            if len(split_data) == 3:
-                user_name = split_data[0]
-                user_phone = split_data[1]
-                user_age = split_data[2]
-                
-                await send_data(user_name, user_age, user_phone, course_name)
+            if  await is_phone_valid(split_data[1]):
+                if len(split_data) == 3:
+                    user_name = split_data[0]
+                    user_phone = split_data[1]
+                    user_age = split_data[2]
+                    
+                    await send_data(user_name, user_age, user_phone, course_name)
 
-                await message.answer(AFTER_MESSAGE)
-                
+                    await message.answer(AFTER_MESSAGE)
+                    
+                else:
+                    await message.answer("Неправильный формат ввода.\nПопробуйте заново")
             else:
-                await message.answer("Неправильный формат ввода.\nПопробуйте заново")
+                await message.answer("Неправильно введён номер телефона.\nПопробуйте заново")
         else:
-            await message.answer("Неправильно введён номер телефона.\nПопробуйте заново")
-    else:
-        await message.answer(HELLO_MESSAGE, reply_markup=await main_menu())
+            await message.answer(HELLO_MESSAGE, reply_markup=await main_menu())
+    except Exception as err:
+        logger.error(f"{err}")

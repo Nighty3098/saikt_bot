@@ -21,5 +21,8 @@ async def send_data(user_name, user_age, user_phone, cource_name):
 
     msg = f"====== Новая заявка ======\n\nПользователь: {user_name}\nВозраст: {user_age}\nНомер телефона: {user_phone}\nНаправление: {cource_name}\n\nДата подачи:\n{current_date}"
 
-    for admin in ADMINS: 
-        await bot.send_message(admin, msg)
+    for admin in ADMINS:
+        try:
+            logger.debug(await bot.send_message(admin, msg))
+        except Exception as err:
+            logger.error(f"{err}")
